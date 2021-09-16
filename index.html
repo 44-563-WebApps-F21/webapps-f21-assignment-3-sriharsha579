@@ -89,8 +89,56 @@
    
                             </style>
                      </table>
+                     <hr>
+                     <blockquote cite="https://en.wikipedia.org/wiki/Segment_tree">
+                        A segment tree, also known as a statistic tree, is a tree data structure used for storing information about intervals, or segments.
+                         It allows querying which of the stored segments contain a given point. It is, in principle, a static structure; that is, it's a structure that cannot be modified once it's built. 
+                         A similar data structure is the interval tree.A segment tree for a set I of n intervals uses O(n log n) storage and can be built in O(n log n) time. 
+                        Segment trees support searching for all the intervals that contain a query point in time O(log n + k), k being the number of retrieved intervals or segments  
+                     </blockquote>
+                     <a href="https://en.wikipedia.org/wiki/Segment_tree"> Link of Reference for the description</a>
 
+                     <pre>
 
+                        void build(int a[], int v, int tl, int tr) {
+                            if (tl == tr) {
+                                t[v] = a[tl];
+                            } else {
+                                int tm = (tl + tr) / 2;
+                                build(a, v*2, tl, tm);
+                                build(a, v*2+1, tm+1, tr);
+                                t[v] = 0;
+                            }
+                        }
+                        
+                        void update(int v, int tl, int tr, int l, int r, int add) {
+                            if (l > r)
+                                return;
+                            if (l == tl && r == tr) {
+                                t[v] += add;
+                            } else {
+                                int tm = (tl + tr) / 2;
+                                update(v*2, tl, tm, l, min(r, tm), add);
+                                update(v*2+1, tm+1, tr, max(l, tm+1), r, add);
+                            }
+                        }
+                        
+                        int get(int v, int tl, int tr, int pos) {
+                            if (tl == tr)
+                                return t[v];
+                            int tm = (tl + tr) / 2;
+                            if (pos <= tm)
+                                return t[v] + get(v*2, tl, tm, pos);
+                            else
+                                return t[v] + get(v*2+1, tm+1, tr, pos);
+                        }
+                     </pre>
+                     <a href="https://cp-algorithms.com/data_structures/segment_tree.html">
+                        link of algorithm Reference
+                    </a>
+                    
+
+                                                
 
 
 
